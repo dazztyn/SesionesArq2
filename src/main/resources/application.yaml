@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: sesiones
+
+  # Conexión a PostgreSQL. Los valores ${VAR:defecto} se leen de variables de entorno
+  # (así se configurará en Kubernetes). En local, spring-boot-docker-compose los
+  # reemplaza por los del contenedor de compose.yaml.
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/sesiones}
+    username: ${DB_USER:sesiones}
+    password: ${DB_PASSWORD:sesiones}
+
+  jpa:
+    # Flyway es dueño del esquema; Hibernate solo verifica que las entidades calcen.
+    hibernate:
+      ddl-auto: validate
+    # Evita mantener la conexión a la BD abierta durante toda la petición HTTP.
+    open-in-view: false
+
+  # Por defecto Flyway lee las migraciones de classpath:db/migration.
+  flyway:
+    enabled: true
+
+server:
+  port: ${HTTP_PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      # Muestra el detalle de cada componente (db, disco...) en /actuator/health.
+      show-details: always

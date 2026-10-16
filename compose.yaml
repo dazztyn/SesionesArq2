@@ -1,0 +1,17 @@
+# Base de datos para desarrollo local. Spring Boot la levanta solo al ejecutar
+# ./mvnw spring-boot:run (dependencia spring-boot-docker-compose).
+# También se puede levantar a mano: docker compose up -d
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: sesiones
+      POSTGRES_USER: sesiones
+      POSTGRES_PASSWORD: sesiones
+    ports:
+      - "5432:5432"
+    volumes:
+      - sesiones-pgdata:/var/lib/postgresql/data
+
+volumes:
+  sesiones-pgdata:
